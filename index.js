@@ -57,28 +57,53 @@ class Cube {
         const points = [];
         for (const p of this.model) {
             const wp = this.toWorldPoint(p);
-            console.log(wp);
+            //console.log(wp);
             const xy = this.toXyPoint(wp);
             points.push(xy);
         }
 
         view.beginPath();
-        view.moveTo(points[3].x, points[3].y);
-        view.lineTo(points[0].x, points[0].y);
-        view.lineTo(points[1].x, points[1].y);
-        view.lineTo(points[2].x, points[2].y);
-        view.lineTo(points[3].x, points[3].y);
+        this.moveTo(points[3]);
+        this.lineTo(points[0]);
+        this.lineTo(points[1]);
+        this.lineTo(points[2]);
+        this.lineTo(points[3]);
 
-        view.lineTo(points[7].x, points[7].y);
-        view.lineTo(points[4].x, points[4].y);
-        view.lineTo(points[5].x, points[5].y);
-        view.lineTo(points[6].x, points[6].y);
-        view.lineTo(points[7].x, points[7].y);
+        this.moveTo(points[7]);
+        this.lineTo(points[4]);
+        this.lineTo(points[5]);
+        this.lineTo(points[6]);
+        this.lineTo(points[7]);
+
+        this.moveTo(points[0]);
+        this.lineTo(points[4]);
+        this.moveTo(points[1]);
+        this.lineTo(points[5]);
+        this.moveTo(points[2]);
+        this.lineTo(points[6]);
+        this.moveTo(points[3]);
+        this.lineTo(points[7]);
+
 
         view.stroke();
     }
+    moveTo(p) { view.moveTo(p.x, p.y); }
+    lineTo(p) { view.lineTo(p.x, p.y); }
 }
 
-const cube = new Cube(-5, -5, 20, 2);
+const cube = new Cube(-3, -3, 20, 2);
 
-cube.draw();
+const gui = new dat.GUI();
+gui.add(cube.position, "x", -20, 20);
+gui.add(cube.position, "y", -20, 20);
+gui.add(cube.position, "z", 1, 50);
+
+
+
+function animate() {
+    view.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height); 
+    cube.draw();
+    requestAnimationFrame(animate);
+}
+
+animate();
